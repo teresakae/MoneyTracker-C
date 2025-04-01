@@ -12,12 +12,12 @@ This repository contains a simple income and expense tracking application. It co
 
 ## Purpose
 This project demonstrates the application of fundamental programming concepts learned in SFT 118 - Algorithms and Programming, including:
-* Data structures (e.g., arrays, structs)
+* Data structures (e.g., lists, dictionaries)
 * Database interaction (SQL)
-* Data visualization (using C libraries)
+* Data visualization
 * Basic file handling (CRUD operations)
 
 ## Technologies Used
-* **Programming Language:** C
+* **Programming Language:** Java
 * **IDE:** NetBeans
 * **Database:** MySQL (via XAMPP)
