@@ -1,6 +1,7 @@
 # Money Tracker (SFT 118 - Algorithms and Programming Final Project)
 ![Cover Image](images/Cover.jpg)
 This repository contains a simple income and expense tracking application. It includes date, name, and category sorting, featuring visualized summary graphs. Developed using Java and SQL within the NetBeans IDE as the final SFT 118 - Algorithms and Programming project. This was a beginner group project.
+
 ![Project Screenshots](images/Screenshots.jpg)
 ## Features
 * **Data Entry:** Easily record income and expenses with details such as date, name/description, and category. Data is persistently stored in an SQL database.
