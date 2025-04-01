@@ -1,7 +1,5 @@
-# MoneyTracker-C
-A simple income-expense tracker with date, name, and category sorting, featuring visualized summary graphs. Built using C and SQL within the NetBeans IDE.
-
 # Money Tracker (SFT 118 - Algorithms and Programming Final Project)
+A simple income-expense tracker with date, name, and category sorting, featuring visualized summary graphs. Built using C and SQL within the NetBeans IDE.
 This repository contains a simple income and expense tracking application, developed as the final project for SFT 118 - Algorithms and Programming. This was a beginner group project.
 
 ## Features
