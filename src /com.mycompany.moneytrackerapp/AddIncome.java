@@ -10,6 +10,7 @@ import java.awt.Font;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.sql.ResultSet;
 import javax.swing.JLabel;
@@ -18,12 +19,9 @@ import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
-public class AddExpense extends javax.swing.JFrame {
-
+public class AddIncome extends javax.swing.JFrame {
     private Connection conn;
-    private Summary summaryPage;
-    
-
+ 
     private static class HeaderRenderer implements TableCellRenderer {
 
         DefaultTableCellRenderer renderer;
@@ -44,24 +42,8 @@ public class AddExpense extends javax.swing.JFrame {
 
     /**
      * Creates new form Home
-     *
      */
-    
-    /**
- * Constructor for AddExpense.
- *
- * @param summaryPage the summary page to which the expense will be added
- */
-    public AddExpense(Summary summaryPage) {
-        this.summaryPage = summaryPage;
-        initComponents();
-        initConnection();
-        updateComb();
-    }
-    
-    
-    public AddExpense() {
-        
+    public AddIncome() {
         try {
             Font centuryGothic = new Font("Century Gothic", Font.BOLD, 13);
             if (centuryGothic.getFamily().equals("Dialog")) {
@@ -73,31 +55,24 @@ public class AddExpense extends javax.swing.JFrame {
             e.printStackTrace();
         }
 
-
         initComponents();
         initConnection();
         updateComb();
-        
-        
-        
     }
-    
 
     private void initConnection() {
         try {
-                if (conn == null || conn.isClosed()) {
-                    conn = Koneksi.getConnection(); 
-                }
-        } catch (SQLException e) {
+            conn = Koneksi.getConnection();
+        } catch (Exception e) {
             System.out.println("Fail: " + e.getMessage());
         }
-    }
-
+}
+    
     private void updateComb() {
         String sql = "SELECT category FROM category";
         try (PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
-            CategoryComboBox.removeAllItems(); 
+            CategoryComboBox.removeAllItems();
 
             while (rs.next()) {
                 String category = rs.getString("category");
@@ -107,26 +82,24 @@ public class AddExpense extends javax.swing.JFrame {
             System.out.println("Fail: " + ex.getMessage());
         }
     }
-
+    
+ 
     private void Add() {
         java.util.Date selectedDate = DateChooserField.getDate();
         if (selectedDate != null) {
             java.sql.Date date = new java.sql.Date(selectedDate.getTime());
-            String type = "Expense";
+            String type = "Income";
             String category = (String) CategoryComboBox.getSelectedItem();
             String item = ItemTextField.getText();
             String amount = AmountTextField.getText();
             try {
-                if (conn == null || conn.isClosed()) {
-                    conn = Koneksi.getConnection(); 
-                }
                 String insertSQL = "INSERT INTO transaction (type, date, category, item, amount) VALUES (?, ?, ?, ?, ?)";
                 try (PreparedStatement ps = conn.prepareStatement(insertSQL)) {
                     ps.setString(1, type);
                     ps.setDate(2, date);
                     ps.setString(3, category);
                     ps.setString(4, item);
-                    ps.setInt(5, Integer.parseInt(amount));
+                    ps.setInt(5, Integer.parseInt(amount)); 
 
                     ps.executeUpdate();
                     System.out.println("Success");
@@ -140,6 +113,7 @@ public class AddExpense extends javax.swing.JFrame {
             System.out.println("No date selected");
         }
     }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -238,7 +212,7 @@ public class AddExpense extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Century Gothic", 1, 16)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setText("Add Expense");
+        jLabel9.setText("Add Income");
 
         jLabel2.setFont(new java.awt.Font("Century Gothic", 0, 13)); // NOI18N
         jLabel2.setText("Date");
@@ -258,7 +232,7 @@ public class AddExpense extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Century Gothic", 0, 13)); // NOI18N
         jLabel7.setText(":");
 
-        ItemTextField.setFont(new java.awt.Font("Century Gothic", 0, 13)); // NOI18N
+        ItemTextField.setFont(new java.awt.Font("Century Gothic", 2, 13)); // NOI18N
         ItemTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ItemTextFieldActionPerformed(evt);
@@ -287,12 +261,6 @@ public class AddExpense extends javax.swing.JFrame {
         });
 
         CategoryComboBox.setFont(new java.awt.Font("Century Gothic", 0, 13)); // NOI18N
-        CategoryComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        CategoryComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CategoryComboBoxActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -359,7 +327,7 @@ public class AddExpense extends javax.swing.JFrame {
                     .addComponent(AmountTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(37, 37, 37)
                 .addComponent(btn_save, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(160, Short.MAX_VALUE))
+                .addContainerGap(158, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -426,7 +394,7 @@ public class AddExpense extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         Summary summary = new Summary();
         summary.setVisible(true);
-        this.dispose();        // TODO add your handling code here:
+        this.dispose();          // TODO add your handling code here:
     }                                        
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {                                         
@@ -445,20 +413,11 @@ public class AddExpense extends javax.swing.JFrame {
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
-        Add();      
+        Add();
         Home home = new Home();
         home.setVisible(true);
         this.dispose();
-        
-        
-        
-        
-        
     }                                        
-
-    private void CategoryComboBoxActionPerformed(java.awt.event.ActionEvent evt) {                                                 
-        // TODO add your handling code here:
-    }                                                
 
     /**
      * @param args the command line arguments
@@ -477,46 +436,14 @@ public class AddExpense extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddExpense.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddIncome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddExpense.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddIncome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddExpense.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddIncome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddExpense.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(AddIncome.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -553,7 +480,7 @@ public class AddExpense extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddExpense().setVisible(true);
+                new AddIncome().setVisible(true);
             }
         });
     }
